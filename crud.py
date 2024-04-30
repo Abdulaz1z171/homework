@@ -11,6 +11,7 @@ try:
         port=5432
     ) 
     cur =   conn.cursor()
+#  Table create qiladigan funksiya
     def create_table_product():
         create_table_products = """CREATE TABLE IF NOT EXISTS products
                 (
@@ -30,8 +31,8 @@ try:
                 
         cur.execute(create_table_products)
         conn.commit()
-                
             
+# Tablega malumot qushadigan funksiya                     
     def insert_information_to_query():
         insert_to_product = """INSERT INTO products(product_name,price,color,image)
             VALUES (%s,%s,%s,%s)
@@ -46,27 +47,28 @@ try:
                 
             
 
-
+#  Table dan malumotni id orqali uchiradigan funksiya
     def delete_query_products(product_id):
         delete_into_query = """DELETE FROM products WHERE id = %s;"""
 
         cur.execute(delete_into_query, (product_id,))
         conn.commit()
                 
-
+# Tabledagi ma'lumot nomini  id orqali uzgartirish
     def update_query_products(product_id, product_name):
         update_query = """UPDATE products SET product_name = %s WHERE id = %s;"""
         data = (product_name,product_id )
         cur.execute(update_query, data)
         conn.commit()
                 
-
+# Table dagi ma'lumotlarni hammasini consolga chiqaradigan funksiya
     def select_all_information_from_products():
         select_product_query = '''SELECT * FROM products ;'''
         cur.execute(select_product_query)
         for product in cur.fetchall():
             print(product)
 
+# Table dagi bitta ma'lumotni id orqali chiqarish 
     def select_one_iformation_from_products(product_id):
         get_product_by_id = """SELECT * FROM products WHERE id = %s"""
         cur.execute(get_product_by_id,(product_id,))
@@ -81,4 +83,8 @@ else:
     print('The operation was successful')
 
 
-select_one_iformation_from_products(3)
+finally:
+    if cur is not None:
+        cur.close()
+    if conn is not None:
+        conn.close()
